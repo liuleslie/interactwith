@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/0.9.0/aframe.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component@^3.2.x/dist/aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script> 
+
+    <script src="https://unpkg.com/aframe-alongpath-component@^1.0.x/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-mixin id="softgray" color="#ebebeb"></a-mixin>
+        <a-mixin id="spinning" animation__spininplace="property:rotation; dur:6000; to:0 360 0; easing:linear; loop:true"></a-mixin>
+        <a-mixin id="pulsing" animation__sizechange="property:scale; dur:3000; from:1 1 1; to:0.7 0.7 0.7; easing:linear; loop:true; dir:alternate; pauseEvents:mouseenter; resumeEvents:mouseleave"></a-mixin>
+      </a-assets>
+
+      <a-sky color="teal"></a-sky>
+
+      <a-entity id="gem"
+        mixin="spinning pulsing"
+        visible="false"
+        material="color:teal"
+        position="0 1.6 -1.5"
+        geometry="primitive:icosahedron;radius:0.1"
+        scale="0.6 0.6 0.6"
+        event-set__mouseenter="material.color:tomato"
+        event-set__mouseleave="material.color:teal"
+        event-set__mousedown="_target:#gem2;visible:true"
+        event-set__click="_target:#trail;visible:true"></a-entity>
+
+        <!--mousedn gem to make gem2 visible: have a smaller entity
+          move along path three times or so to lead user to pivot-->
+
+      <a-entity id="trail">
+        <a-entity id="trail1"
+        material="color:#ebebeb;opacity:0.3"
+        visible="false"
+        geometry="primitive:tetrahedron;radius:0.05;scale:0.1 0.1 0.1"
+        alongpath="curve:#path1;dur:9000;elasticity:1000;loop:true"></a-entity>
+        <a-entity id="trail2"
+        material="color:#ebebeb;opacity:0.3"
+        visible="false"
+        geometry="primitive:tetrahedron;radius:0.05;scale:0.1 0.1 0.1"
+        alongpath="curve:#path2;dur:9000;elasticity:1000;loop:true"></a-entity>
+        
+      </a-entity>
+      
+
+      <a-curve id="path1">
+        <a-curve-point position="0 1.6 -3"></a-curve-point>
+        <a-curve-point position="0 1.6 -1.5"></a-curve-point>
+        <a-curve-point position="-0.5 1.5 -1"></a-curve-point>
+        <a-curve-point position="0.5 1.7 0.2"></a-curve-point>
+        <a-curve-point position="-0.2 1.5 1.3"></a-curve-point>
+        <a-curve-point position="-3 1.6 3.2"></a-curve-point>
+        <a-curve-point position="0.5 1.5 0.2"></a-curve-point>
+        <a-curve-point position="-0.5 1.4 -1"></a-curve-point>
+        <a-curve-point position="0 1.6 -1.5"></a-curve-point>
+        <a-curve-point position="0 1.6 -1.6"></a-curve-point>
+      </a-curve>
+
+      <a-curve id="path2">
+        <a-curve-point></a-curve-point>
+      </a-curve>
+
+      <a-entity id="gem2"
+        mixin="spinning pulsing"
+        visible="false"
+        material="color:teal"
+        position="-3 1.6 3.2"
+        geometry="primitive:octahedron;radius:1.2"
+        animation__spinwildly="property:rotation;dir:alternate;to:360 0 360;dur:6000;loop:true;startEvents:mouseenter;pauseEvents:mouseleave;resumeEvents:mouseenter;elasticity:800"></a-entity>
+
+      <a-text id="header"
+        mixin="softgray,spin"
+        value="hold over to reveal text"
+        scale="0.2 0.2 0.2"
+        geometry="primitive:plane;width:3;height:3"
+        material="color:teal"
+        align="center"
+        rotation="-90 0 0"
+        position="0 0.32 -1.3"
+        opacity="0.6"
+        font="dejavu"
+        animation__float="property:position;dir:alternate;loop:true;to:0 0.3 -1.3"
+        event-set__mousedown="_target:#instructions;visible:true"
+        event-set__mouseup="_target:#instructions;visible:false"></a-text>
+
+      <a-text id="instructions"
+        mixin="softgray"
+        align="center"
+        font="dejavu"
+        scale="0.5 0.5 0.5"
+        value="click on the walls"
+        rotation="-30 0 0"
+        position="0 0.1 -2.5"
+        visible="false"></a-text>
+
+      <a-box id="boxleft"
+        color="teal"
+        position="-2 2 -1"
+        width="1"
+        height="3"
+        depth="3.5"
+        event-set__click="_target:#gem;visible:true"
+        animation__movesonhover="property:position;to:-1.3 2 -1;dir:alternate;startEvents:mouseenter;pauseEvents:click;resumeEvents:mouseenter;loop:true;dur:5000"></a-box>
+
+      <a-box id="boxright"
+        color="teal"
+        position="1.5 2 0"
+        width="1"
+        height="3"
+        depth="6"
+        event-set__click="_target:#gem;visible:false"
+        animation__movesonhover="property:position;to:1 2 0;dir:alternate;startEvents:mouseenter;pauseEvents:click;resumeEvents:mouseenter;loop:true;dur:5000"></a-box>
+
+      <a-plane id="ground"
+        rotation="-90 90 0"
+        width="10"
+        height="10"
+        color="teal"></a-plane>
+
+      <a-camera>
+        <a-cursor></a-cursor>
+      </a-camera>
+    </a-scene>
+  </body>
+</html>
