@@ -30,9 +30,17 @@
         event-set__mousedown="_target:#gem2;visible:true"
         event-set__click="_target:#trail;visible:true"></a-entity>
 
+
+      <a-entity id="trail"
+        material="color:#ebebeb;opacity:0.3"
+        visible="false"
+        geometry="primitive:tetrahedron;radius:0.05;scale:0.1 0.1 0.1"
+        alongpath="curve:#path1;dur:9000;elasticity:1000;loop:true"></a-entity>
+        
+
         <!--mousedn gem to make gem2 visible: have a smaller entity
           move along path three times or so to lead user to pivot-->
-
+<!-- 
       <a-entity id="trail">
         <a-entity id="trail1"
         material="color:#ebebeb;opacity:0.3"
@@ -46,7 +54,7 @@
         alongpath="curve:#path2;dur:9000;elasticity:1000;loop:true"></a-entity>
         
       </a-entity>
-      
+       -->
 
       <a-curve id="path1">
         <a-curve-point position="0 1.6 -3"></a-curve-point>
